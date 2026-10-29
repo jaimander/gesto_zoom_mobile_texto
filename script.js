@@ -1,50 +1,56 @@
-const touchArea = document.querySelector("#touch-area");
-const statusText = document.querySelector("#status");
 
-let initialDistance = null;
+const texto = document.querySelector("#texto");
+
 let lastDistance = null;
+let zoomLevel = 0;
+
 const threshold = 8;
+const maxZoom = 30;
+const spacingStep = 3; // píxeles añadidos por cada paso
 
 function distanceBetweenTouches(touches) {
   const dx = touches[0].clientX - touches[1].clientX;
   const dy = touches[0].clientY - touches[1].clientY;
+
   return Math.hypot(dx, dy);
 }
 
-touchArea.addEventListener("touchstart", (event) => {
+function updateSpacing() {
+  texto.style.wordSpacing = `${zoomLevel * spacingStep}px`;
+}
+
+texto.addEventListener("touchstart", (event) => {
   if (event.touches.length === 2) {
-    initialDistance = distanceBetweenTouches(event.touches);
-    lastDistance = initialDistance;
-    statusText.textContent = "Dos dedos detectados…";
+    lastDistance = distanceBetweenTouches(event.touches);
   }
 }, { passive: true });
 
-touchArea.addEventListener("touchmove", (event) => {
-  if (event.touches.length !== 2 || lastDistance === null) return;
+texto.addEventListener("touchmove", (event) => {
+  if (event.touches.length !== 2 || lastDistance === null) {
+    return;
+  }
 
   const currentDistance = distanceBetweenTouches(event.touches);
   const difference = currentDistance - lastDistance;
 
   if (difference > threshold) {
-    statusText.textContent = "ZOOM IN · separando los dedos";
-    touchArea.dataset.gesture = "in";
+    zoomLevel = Math.min(zoomLevel + 1, maxZoom);
+    updateSpacing();
+    lastDistance = currentDistance;
   } else if (difference < -threshold) {
-    statusText.textContent = "ZOOM OUT · juntando los dedos";
-    touchArea.dataset.gesture = "out";
+    zoomLevel = Math.max(zoomLevel - 1, 0);
+    updateSpacing();
+    lastDistance = currentDistance;
   }
-
-  lastDistance = currentDistance;
 }, { passive: true });
 
-function resetGesture() {
-  initialDistance = null;
-  lastDistance = null;
-  delete touchArea.dataset.gesture;
-  statusText.textContent = "Esperando gesto…";
+function resetGesture(event) {
+  if (event.touches.length < 2) {
+    lastDistance = null;
+  }
 }
 
-touchArea.addEventListener("touchend", (event) => {
-  if (event.touches.length < 2) resetGesture();
+texto.addEventListener("touchend", resetGesture);
+texto.addEventListener("touchcancel", () => {
+  lastDistance = null;
 });
-
-touchArea.addEventListener("touchcancel", resetGesture);

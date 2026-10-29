@@ -88,3 +88,9 @@ h1 {
   font-size: 0.85rem;
   opacity: 0.7;
 }
+
+#texto {
+  word-spacing: 0;
+  line-height: 1.8;
+  transition: word-spacing 0.15s ease;
+}
