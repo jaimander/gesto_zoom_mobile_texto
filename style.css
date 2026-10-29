@@ -9,15 +9,19 @@ body {
 }
 
 #poema {
-  max-width: 620px;
-  margin: 0 auto;
+  overflow: auto;
+  max-width: 100%;
+  max-height: 90vh;
 }
 
 #texto {
   word-spacing: 0;
   line-height: 1.8;
-  touch-action: none;
+  touch-action: pan-x pan-y;
   user-select: none;
   -webkit-user-select: none;
   transition: word-spacing 0.15s ease;
+  width: max-content;
+  min-width: 100%;
+  max-width: none;
 }
