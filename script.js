@@ -67,3 +67,14 @@ texto.addEventListener("touchend", resetGesture);
 texto.addEventListener("touchcancel", () => {
   lastDistance = null;
 });
+
+// Simulación de zoom con la rueda del ratón
+document.addEventListener("wheel", (event) => {
+  if (event.deltaY < 0) {
+    zoomLevel = Math.min(zoomLevel + 1, maxZoom);
+  } else if (event.deltaY > 0) {
+    zoomLevel = Math.max(zoomLevel - 1, 0);
+  }
+
+  updateSpacing();
+}, { passive: true });
