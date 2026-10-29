@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Detector de gesto de zoom</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="demo">
+    <p class="eyebrow">EXPERIMENTO TÁCTIL</p>
+    <h1>Zoom con dos dedos</h1>
+    <p class="instructions">En la zona de abajo, separa o junta dos dedos para detectar el gesto.</p>
+
+    <section id="touch-area" class="touch-area" aria-label="Zona para probar el gesto de zoom">
+      <div class="target" aria-hidden="true">+</div>
+      <p id="status" role="status" aria-live="polite">Esperando gesto…</p>
+    </section>
+    <p class="note">Prueba en un dispositivo con pantalla táctil.</p>
+  </main>
+</body>
+</html>
